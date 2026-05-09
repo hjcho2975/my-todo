@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#3182F6" />
+    <title>myTODO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              toss: {
+                blue: "#3182F6",
+                blueHover: "#1B64DA",
+                bg: "#F2F4F6",
+                line: "#E5E8EB",
+                ink: "#191F28",
+                sub: "#6B7684",
+                muted: "#8B95A1",
+              },
+            },
+            fontFamily: {
+              sans: [
+                "Pretendard",
+                "-apple-system",
+                "BlinkMacSystemFont",
+                "system-ui",
+                "Segoe UI",
+                "Apple SD Gothic Neo",
+                "sans-serif",
+              ],
+            },
+            boxShadow: {
+              card: "0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
+    />
+    <style>
+      html,
+      body {
+        background: #f2f4f6;
+        color: #191f28;
+      }
+      .focus-ring:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.18);
+        border-color: #3182f6;
+      }
+      .skeleton {
+        background: linear-gradient(90deg, #eef0f3 0%, #f6f7f9 50%, #eef0f3 100%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+      }
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .fade-in { animation: fadeIn .18s ease-out; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(2px);} to {opacity:1; transform:none;} }
+    </style>
+  </head>
+  <body class="font-sans antialiased">
+    <main class="mx-auto max-w-xl px-5 pt-10 pb-24">
+      <!-- Header -->
+      <header class="mb-7">
+        <p class="text-toss-sub text-sm font-medium">myTODO</p>
+        <h1 class="mt-1 text-[28px] font-bold tracking-tight text-toss-ink">
+          할 일 목록
+        </h1>
+      </header>
+
+      <!-- Input area -->
+      <section
+        class="rounded-2xl bg-white p-4 shadow-card border border-toss-line"
+      >
+        <form id="add-form" class="flex flex-col gap-3">
+          <input
+            id="title"
+            type="text"
+            required
+            maxlength="100"
+            placeholder="할 일 입력"
+            class="focus-ring w-full rounded-xl border border-toss-line bg-white px-4 py-3 text-[15px] placeholder:text-toss-muted transition"
+            autocomplete="off"
+          />
+          <input
+            id="detail"
+            type="text"
+            maxlength="200"
+            placeholder="상세 내용 (선택)"
+            class="focus-ring w-full rounded-xl border border-toss-line bg-white px-4 py-3 text-[15px] placeholder:text-toss-muted transition"
+            autocomplete="off"
+          />
+          <button
+            type="submit"
+            id="add-btn"
+            class="mt-1 rounded-xl bg-toss-blue px-4 py-3 text-[15px] font-semibold text-white transition hover:bg-toss-blueHover active:scale-[.99] disabled:opacity-60"
+          >
+            추가
+          </button>
+        </form>
+      </section>
+
+      <!-- List -->
+      <section class="mt-7">
+        <div class="flex items-baseline justify-between mb-3 px-1">
+          <h2 class="text-[15px] font-semibold text-toss-ink">목록</h2>
+          <span id="count" class="text-xs text-toss-sub"></span>
+        </div>
+
+        <ul id="list" class="flex flex-col gap-3" aria-live="polite"></ul>
+
+        <!-- Empty state -->
+        <div id="empty" class="hidden mt-4 rounded-2xl bg-white border border-toss-line p-8 text-center shadow-card">
+          <div class="mx-auto mb-3 h-12 w-12 rounded-full bg-toss-bg flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 7-7"/><path d="M21 12a9 9 0 11-9-9"/></svg>
+          </div>
+          <p class="text-toss-ink font-semibold">아직 할 일이 없어요</p>
+          <p class="text-toss-sub text-sm mt-1">위 입력창에 새 할 일을 추가해보세요.</p>
+        </div>
+
+        <!-- Loading skeleton -->
+        <div id="loading" class="flex flex-col gap-3">
+          <div class="skeleton h-20 rounded-2xl"></div>
+          <div class="skeleton h-20 rounded-2xl"></div>
+          <div class="skeleton h-20 rounded-2xl"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast -->
+    <div
+      id="toast"
+      class="pointer-events-none fixed inset-x-0 bottom-6 mx-auto hidden w-fit max-w-[90%] rounded-full bg-toss-ink/95 px-4 py-2.5 text-sm text-white shadow-card"
+    ></div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
